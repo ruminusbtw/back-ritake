@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Список задач{% endblock %}
+
+{% block content %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-center">📌 Список задач</h1>
+        <a href="{% url 'todo_create' %}" class="btn btn-success">➕ Добавить задачу</a>
+    </div>
+
+    {% if todos %}
+        <div class="list-group">
+            {% for todo in todos %}
+                <a href="{% url 'todo_detail' todo.id %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    <span>{{ todo.title }}</span>
+                    <span class="badge bg-{% if todo.status %}success{% else %}warning{% endif %}">
+                        {% if todo.status %}✅ Выполнено{% else %}⏳ В процессе{% endif %}
+                    </span>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center">Нет задач 😞</div>
+    {% endif %}
+{% endblock %}

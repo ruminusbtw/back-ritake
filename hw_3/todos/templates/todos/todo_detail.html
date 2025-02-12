@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}{{ todo.title }}{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">{{ todo.title }}</h2>
+            <p class="card-text">{{ todo.description }}</p>
+            <p><strong>Дата выполнения:</strong> {{ todo.due_date }}</p>
+            <p>
+                <strong>Статус:</strong>
+                <span class="badge bg-{% if todo.status %}success{% else %}warning{% endif %}">
+                    {% if todo.status %}✅ Выполнено{% else %}⏳ В процессе{% endif %}
+                </span>
+            </p>
+            <a href="{% url 'todo_list' %}" class="btn btn-primary">🔙 Назад</a>
+            <a href="{% url 'todo_delete' todo.id %}" class="btn btn-danger">🗑 Удалить</a>
+        </div>
+    </div>
+{% endblock %}

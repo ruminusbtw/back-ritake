@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Создать задачу{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">📝 Создать задачу</h2>
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="id_title" class="form-label">Название</label>
+                    {{ form.title }}
+                </div>
+                <div class="mb-3">
+                    <label for="id_description" class="form-label">Описание</label>
+                    {{ form.description }}
+                </div>
+                <div class="mb-3">
+                    <label for="id_due_date" class="form-label">Дата выполнения</label>
+                    {{ form.due_date }}
+                </div>
+                <div class="form-check mb-3">
+                    {{ form.status }}
+                    <label for="id_status" class="form-check-label">Выполнено</label>
+                </div>
+                <button type="submit" class="btn btn-success">💾 Сохранить</button>
+                <a href="{% url 'todo_list' %}" class="btn btn-secondary">🚫 Отмена</a>
+            </form>
+        </div>
+    </div>
+{% endblock %}
