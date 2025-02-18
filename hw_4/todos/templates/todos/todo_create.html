@@ -1,0 +1,9 @@
+<h2>Создать задачу для списка "{{ todo_list.name }}"</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Создать</button>
+</form>
+
+<a href="{% url 'todo_list_detail' id=todo_list.id %}">Назад к списку задач</a>

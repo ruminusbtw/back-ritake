@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Список задач{% endblock %}
+
+{% block content %}
+    <h1>📌 Список задач</h1>
+
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#todoModal">
+        Создать задачу
+    </button>
+
+    <div class="modal fade" id="todoModal" tabindex="-1" aria-labelledby="todoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="todoModalLabel">Создать задачу</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+              <form method="post" action="{% url 'todo_create' %}">
+                {% csrf_token %}
+                <input type="hidden" name="todo_list" value="{{ todo_list.id }}">
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Создать</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    {% for todo in todos %}
+        <div>
+            <h3>{{ todo.title }}</h3>
+            <p>{{ todo.description }}</p>
+            <p>{% if todo.completed %}✅ Выполнено{% else %}❌ Не выполнено{% endif %}</p>
+        </div>
+    {% endfor %}
+{% endblock %}
