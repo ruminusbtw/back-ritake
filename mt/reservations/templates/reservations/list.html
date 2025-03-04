@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h2 class="text-center mb-4">📅 Список бронирований</h2>
+        <div class="d-flex justify-content-between mb-3">
+            <a href="{% url 'add_reservation' %}" class="btn btn-success">➕ Создать бронь</a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Клиент</th>
+                        <th>Столик</th>
+                        <th>Дата</th>
+                        <th>Статус</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reservation in reservations %}
+                    <tr>
+                        <td>{{ reservation.id }}</td>
+                        <td>{{ reservation.customer.name }}</td>
+                        <td>№{{ reservation.table.number }}</td>
+                        <td>{{ reservation.date }}</td>
+                        <td>
+                            <form action="{% url 'change_reservation_status' reservation.id %}" method="post" style="display:inline;">
+                                {% csrf_token %}
+                                <select name="status" class="form-select form-select-sm
+                                    {% if reservation.status == 'pending' %} bg-warning text-dark 
+                                    {% elif reservation.status == 'confirmed' %} bg-success text-white 
+                                    {% elif reservation.status == 'cancelled' %} bg-danger text-white {% endif %}"
+                                    onchange="this.form.submit();">
+                                    <option value="pending" {% if reservation.status == "pending" %}selected{% endif %}>Ожидание</option>
+                                    <option value="confirmed" {% if reservation.status == "confirmed" %}selected{% endif %}>Подтверждено</option>
+                                    <option value="cancelled" {% if reservation.status == "cancelled" %}selected{% endif %}>Отменено</option>
+                                </select>
+                            </form>
+                        </td>
+                        <td>
+                            <a href="{% url 'delete_reservation' reservation.id %}" class="btn btn-outline-danger btn-sm"
+                               onclick="return confirm('Вы уверены, что хотите удалить бронь?');">
+                                🗑 Удалить
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-muted">Нет активных бронирований</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
